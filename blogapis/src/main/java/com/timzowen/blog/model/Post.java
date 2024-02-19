@@ -21,5 +21,5 @@ public class Post {
     @Column(name = "description", nullable = false)
     private String description;
     @Column(name = "contents",nullable = false )
-    private String content;
+    private String contents;
 }
