@@ -1,5 +1,6 @@
 package com.timzowen.blog.service.impl;
 
+import com.timzowen.blog.exceptions.ResourceNotFoundException;
 import com.timzowen.blog.model.Post;
 import com.timzowen.blog.payload.PostDto;
 import com.timzowen.blog.repository.PostRepository;
@@ -32,12 +33,36 @@ public class PostServiceImpl implements PostService {
         return posts.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
+    @Override
+    public PostDto getPostById(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post","id",id));
+        return mapToDto(post);
+    }
+
+    @Override
+    public String deletePostById(long id){
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post","id",id));
+        mapToDto(post);
+        postRepository.deleteById(id);
+        return "post delete successfully Id:" + id;
+    }
+
+    public PostDto updatePost(PostDto postDto, long id){
+        Post post = postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Post","id",id));
+        post.setTitle(postDto.getTitle());
+        post.setContents(postDto.getContents());
+        post.setDescription(postDto.getDescription());
+        Post updatedPost = postRepository.save(post);
+        return mapToDto(updatedPost);
+    }
+
     // convert Entity to DTO
     public PostDto mapToDto(Post post){
         PostDto postDto = new PostDto();
         postDto.setId(post.getId());
         postDto.setTitle(post.getTitle());
         postDto.setContents(post.getContents());
+        postDto.setDescription(post.getDescription());
         return postDto;
     }
 
