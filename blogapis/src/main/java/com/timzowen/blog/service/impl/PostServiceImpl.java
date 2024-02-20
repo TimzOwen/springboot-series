@@ -6,6 +6,9 @@ import com.timzowen.blog.repository.PostRepository;
 import com.timzowen.blog.service.PostService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PostServiceImpl implements PostService {
 
@@ -17,21 +20,34 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto createPost(PostDto postDto) {
+        Post post = mapToEntity(postDto);
+        Post savedPost = postRepository.save(post);
+        PostDto postResponse = mapToDto(savedPost);
+        return postResponse;
+    }
 
+    @Override
+    public List<PostDto> getAllPosts() {
+        List<Post> posts = postRepository.findAll();
+        return posts.stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+
+    // convert Entity to DTO
+    public PostDto mapToDto(Post post){
+        PostDto postDto = new PostDto();
+        postDto.setId(post.getId());
+        postDto.setTitle(post.getTitle());
+        postDto.setContents(post.getContents());
+        return postDto;
+    }
+
+    // convert DTo to Entity
+    public Post mapToEntity(PostDto postDto){
         Post post = new Post();
         post.setId(postDto.getId());
         post.setTitle(postDto.getTitle());
         post.setContents(postDto.getContents());
         post.setDescription(postDto.getDescription());
-
-        Post savedPost = postRepository.save(post);
-
-        PostDto postResponse = new PostDto();
-        postResponse.setId(savedPost.getId());
-        postResponse.setTitle(savedPost.getTitle());
-        postResponse.setContents(savedPost.getContents());
-        postResponse.setDescription(savedPost.getDescription());
-
-        return postResponse;
+        return post;
     }
 }
