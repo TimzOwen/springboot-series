@@ -12,5 +12,4 @@ public class PostDto {
     private String contents;
     private String description;
 
-
 }
