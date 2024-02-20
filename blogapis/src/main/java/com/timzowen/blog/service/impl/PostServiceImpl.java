@@ -39,6 +39,14 @@ public class PostServiceImpl implements PostService {
         return mapToDto(post);
     }
 
+    @Override
+    public String deletePostById(long id){
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Post","id",id));
+        mapToDto(post);
+        postRepository.deleteById(id);
+        return "post delete successfully Id:" + id;
+    }
+
     public PostDto updatePost(PostDto postDto, long id){
         Post post = postRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Post","id",id));
         post.setTitle(postDto.getTitle());

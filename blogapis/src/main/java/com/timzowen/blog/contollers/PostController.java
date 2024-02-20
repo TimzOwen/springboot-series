@@ -1,9 +1,7 @@
 package com.timzowen.blog.contollers;
 
 import com.timzowen.blog.payload.PostDto;
-import com.timzowen.blog.repository.PostRepository;
 import com.timzowen.blog.service.PostService;
-import org.springframework.data.repository.Repository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +28,7 @@ public class PostController {
        return postService.getAllPosts();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/post")
     public ResponseEntity<PostDto> getPostById(@PathVariable long id){
        return ResponseEntity.ok(postService.getPostById(id));
     }
@@ -38,6 +36,11 @@ public class PostController {
     @PutMapping("/{id}/update")
     public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable long id){
         return ResponseEntity.ok(postService.updatePost(postDto,id));
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<String> deletePostById(@PathVariable long id){
+        return ResponseEntity.ok(postService.deletePostById(id));
     }
 
 }
