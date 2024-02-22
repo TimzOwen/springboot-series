@@ -5,6 +5,9 @@ import com.timzowen.blog.model.Post;
 import com.timzowen.blog.payload.PostDto;
 import com.timzowen.blog.repository.PostRepository;
 import com.timzowen.blog.service.PostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +31,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts() {
-        List<Post> posts = postRepository.findAll();
+    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        Page<Post> posts = postRepository.findAll(pageable);
         return posts.stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
