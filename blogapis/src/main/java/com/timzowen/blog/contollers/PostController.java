@@ -1,6 +1,7 @@
 package com.timzowen.blog.contollers;
 
 import com.timzowen.blog.payload.PostDto;
+import com.timzowen.blog.payload.PostResponse;
 import com.timzowen.blog.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +24,12 @@ public class PostController {
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/all-posts")
-    public List<PostDto> getAllPosts(@RequestParam(value = "pageNo",defaultValue = "",required = false) int pageNo,
-                                     @RequestParam(value = "pageSize",defaultValue = "10", required = false)int pageSize){
-       return postService.getAllPosts(pageSize,pageNo);
+    @GetMapping("/all")
+    public PostResponse getAllPosts(@RequestParam(value = "pageNo",defaultValue = "0",required = false) int pageNo,
+                                    @RequestParam(value = "pageSize",defaultValue = "10", required = false)int pageSize,
+                                    @RequestParam(value = "sortBy",defaultValue = "id",required = false) String sortBy,
+                                    @RequestParam(value = "sortDir",defaultValue = "asc",required = false) String sortDir){
+       return postService.getAllPosts(pageSize,pageNo,sortBy,sortDir);
     }
 
     @GetMapping("/{id}/post")
