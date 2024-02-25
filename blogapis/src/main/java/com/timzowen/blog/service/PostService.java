@@ -2,6 +2,7 @@ package com.timzowen.blog.service;
 
 import com.timzowen.blog.model.Post;
 import com.timzowen.blog.payload.PostDto;
+import com.timzowen.blog.payload.PostResponse;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -12,7 +13,7 @@ public interface PostService {
 
     PostDto createPost(PostDto postDto);
 
-    List<PostDto> getAllPosts(int pageNo, int pageSize);
+    PostResponse getAllPosts(int pageNo, int pageSize, String sortBy,String sortDir);
 
     PostDto getPostById(Long id);
 
