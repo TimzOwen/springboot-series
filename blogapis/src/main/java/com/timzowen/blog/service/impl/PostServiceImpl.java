@@ -41,7 +41,7 @@ public class PostServiceImpl implements PostService {
         Pageable pageable = PageRequest.of(pageNo,pageSize,sort);
         Page<Post> posts = postRepository.findAll(pageable);
         List<Post> listOfPosts = posts.getContent();
-        List<PostDto> content =  listOfPosts.stream().map(this::mapToDto).toList();
+        List<PostDto> content =  listOfPosts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
 
         PostResponse postResponse = new PostResponse();
         postResponse.setContent(content);
