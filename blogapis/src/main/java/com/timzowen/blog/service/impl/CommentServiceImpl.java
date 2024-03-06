@@ -42,22 +42,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto getCommentById(long postId, long commentId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("post","id", postId));
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("comment","id",commentId));
-        if (!comment.getPost().getId().equals(post.getId())){
-            throw  new BlogAPIException(HttpStatus.BAD_REQUEST,"No such comment related to post id: " );
-        }
-        return mapToDto(comment);
+        Comment comment = getCommentByIdAndPostId(postId,commentId);
+        return mapToDto(comment);t
     }
 
     // update comment....
     @Override
     public CommentDto updateCommentById(long postId, long commentId, CommentDto existingComment) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("post","id",postId));
-        Comment comment = commentRepository.findById(commentId).orElseThrow(()-> new ResourceNotFoundException("comment","id",commentId));
-        if ((!comment.getPost().getId().equals(post.getId()))){
-            throw new BlogAPIException(HttpStatus.BAD_REQUEST,"No such comment associated with a post..");
-        }
+        Comment comment = getCommentByIdAndPostId(postId,commentId);
         comment.setBody(existingComment.getBody());
         comment.setEmail(existingComment.getEmail());
         comment.setBody(existingComment.getBody());
@@ -67,13 +59,18 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public String deleteCommentById(long postId, long commentId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("post","id",postId));
-        Comment comment = commentRepository.findById(commentId).orElseThrow(()-> new ResourceNotFoundException("comment","id",commentId));
-        if ((!comment.getPost().getId().equals(post.getId()))){
-            throw new BlogAPIException(HttpStatus.BAD_REQUEST,"No such comment associated with a post..");
-        }
+        getCommentByIdAndPostId(postId,commentId);
         commentRepository.deleteById(commentId);
         return "comment deleted with id: " + commentId;
+    }
+
+    private Comment getCommentByIdAndPostId(long postId, long commentId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("post", "id", postId));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("comment", "id", commentId));
+        if (!comment.getPost().getId().equals(post.getId())) {
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "No such comment associated with a post.");
+        }
+        return comment;
     }
 
     private CommentDto mapToDto(Comment comment){
