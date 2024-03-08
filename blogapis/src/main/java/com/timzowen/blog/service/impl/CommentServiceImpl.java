@@ -8,6 +8,7 @@ import com.timzowen.blog.payload.CommentDto;
 import com.timzowen.blog.repository.CommentRepository;
 import com.timzowen.blog.repository.PostRepository;
 import com.timzowen.blog.service.CommentService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +20,11 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final ModelMapper modelMapper;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository){
+    public CommentServiceImpl(CommentRepository commentRepository, PostRepository postRepository, ModelMapper modelMapper){
         this.commentRepository=commentRepository;
+        this.modelMapper=modelMapper;
         this.postRepository=postRepository;
     }
 
@@ -43,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto getCommentById(long postId, long commentId) {
         Comment comment = getCommentByIdAndPostId(postId,commentId);
-        return mapToDto(comment);t
+        return mapToDto(comment);
     }
 
     // update comment....
@@ -74,21 +77,11 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private CommentDto mapToDto(Comment comment){
-        CommentDto commentDto = new CommentDto();
-        commentDto.setId(comment.getId());
-        commentDto.setName(comment.getName());
-        commentDto.setBody(comment.getBody());
-        commentDto.setEmail(comment.getEmail());
-        return commentDto;
+       return modelMapper.map(comment, CommentDto.class);
     }
 
     private Comment mapToEntity(CommentDto commentDto){
-        Comment comment = new Comment();
-        comment.setId(commentDto.getId());
-        comment.setBody(commentDto.getBody());
-        comment.setEmail(commentDto.getEmail());
-        comment.setName(commentDto.getName());
-        return comment;
+       return modelMapper.map(commentDto,Comment.class);
     }
 
 }
