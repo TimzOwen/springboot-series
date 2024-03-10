@@ -2,6 +2,7 @@ package com.timzowen.blog.contollers;
 
 import com.timzowen.blog.payload.CommentDto;
 import com.timzowen.blog.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,13 @@ public class CommentController {
     public CommentController(CommentService commentService){
         this.commentService=commentService;
     }
+
     //create comment
     @PostMapping("/post/{postId}/comments")
-    public ResponseEntity<CommentDto> createComment(@PathVariable long postId, @RequestBody CommentDto commentDto){
+    public ResponseEntity<CommentDto> createComment(@PathVariable long postId, @Valid @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.createComment(postId,commentDto), HttpStatus.CREATED);
     }
+
     //get list of comments of a post
     @GetMapping("/comments/{postId}")
     public ResponseEntity<List<CommentDto>> getCommentsByPostId(@PathVariable long postId){
@@ -35,7 +38,7 @@ public class CommentController {
     //update comment....
     @PutMapping("posts/{postId}/update/{commentId}")
     public ResponseEntity<CommentDto> updateCommentFromPost(@PathVariable long postId, @PathVariable long commentId,
-                                                            @RequestBody CommentDto commentDto){
+                                                            @Valid @RequestBody CommentDto commentDto){
         return ResponseEntity.ok(commentService.updateCommentById(postId,commentId,commentDto));
     }
 
