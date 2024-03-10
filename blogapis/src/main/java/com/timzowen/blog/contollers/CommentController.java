@@ -17,11 +17,13 @@ public class CommentController {
     public CommentController(CommentService commentService){
         this.commentService=commentService;
     }
+
     //create comment
     @PostMapping("/post/{postId}/comments")
     public ResponseEntity<CommentDto> createComment(@PathVariable long postId, @RequestBody CommentDto commentDto){
         return new ResponseEntity<>(commentService.createComment(postId,commentDto), HttpStatus.CREATED);
     }
+
     //get list of comments of a post
     @GetMapping("/comments/{postId}")
     public ResponseEntity<List<CommentDto>> getCommentsByPostId(@PathVariable long postId){
