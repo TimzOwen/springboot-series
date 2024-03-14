@@ -8,6 +8,8 @@ import com.timzowen.blog.payload.RegisterDto;
 import com.timzowen.blog.repository.RoleRepository;
 import com.timzowen.blog.repository.UserRepository;
 import com.timzowen.blog.service.AuthService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +23,7 @@ import java.util.Set;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-
+    public static final Logger logger  = LogManager.getLogger(AuthServiceImpl.class);
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
