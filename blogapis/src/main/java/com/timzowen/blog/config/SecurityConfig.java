@@ -43,20 +43,5 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }
-//
-//    @Bean
-//    public UserDetailsService userDetailsService(){
-//        UserDetails timz = User.builder()
-//                .username("owen")
-//                .password(passwordEncoder().encode("owen"))
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password(passwordEncoder().encode("admin"))
-//                .roles("ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(timz,admin);
-//    }
 
 }
