@@ -42,6 +42,16 @@ public class JwtTokenProvider {
     public Key getKey(){
         return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
+
+    public String getUsername(String token){
+        return Jwts.parser()
+                .verifyWith((SecretKey) getKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
     // 004 --> validate JWT token generated
     public boolean validateToken(String token){
         try{
