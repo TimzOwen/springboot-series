@@ -32,10 +32,13 @@ public class PostController {
        return postService.getAllPosts(pageNo,pageSize,sortBy,sortDir);
     }
 
-    @GetMapping("/{id}/post")
-    public ResponseEntity<PostDto> getPostById(@PathVariable long id){
-       return ResponseEntity.ok(postService.getPostById(id));
+    // Get post by id.
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostDto> getPostById(@PathVariable long postId){
+        return ResponseEntity.ok(postService.getPostById(postId));
     }
+
+
 
     @PutMapping("/{id}/update")
     public ResponseEntity<PostDto> updatePost(@Valid @RequestBody PostDto postDto, @PathVariable long id){
