@@ -22,6 +22,8 @@ target/
 
 ### path files
 /src/main/resources/application.yml
+mvnw
+mvnw.cmd
 
 ### NetBeans ###
 /nbproject/private/
