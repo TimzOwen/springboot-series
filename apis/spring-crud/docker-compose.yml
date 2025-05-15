@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    container_name: sumsub_postgres
+    environment:
+      POSTGRES_DB: employee_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Post@Gres00.
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+#  sumsub-integration:
+#    build: .
+#    container_name: sumsub_integration
+#    depends_on:
+#      - postgres
+#    environment:
+#      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/employee_db
+#      - SPRING_DATASOURCE_USERNAME=postgres
+#      - SPRING_DATASOURCE_PASSWORD=Post@Gres00.
+#      - SUMSUB_BASE_URL=https://api.sumsub.com
+#      - SUMSUB_APP_TOKEN=${SUMSUB_APP_TOKEN}
+#      - SUMSUB_SECRET_KEY=${SUMSUB_SECRET_KEY}
+#    ports:
+#      - "8080:8080"
+
+volumes:
+  postgres_data:
